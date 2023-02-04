@@ -117,9 +117,9 @@ const LoginScreen = ({ navigation }) => {
           <StatusBar></StatusBar>
           <View style={styles.welconeContainer}>
             <View>
-              <Text style={styles.welcomeText}>Welcome to EasyBuy</Text>
+              <Text style={styles.welcomeText}>Welcome to HulMa</Text>
               <Text style={styles.welcomeParagraph}>
-                make your ecommerce easy
+                the discount app
               </Text>
             </View>
             <View>
@@ -206,6 +206,7 @@ const styles = StyleSheet.create({
   logo: {
     resizeMode: "contain",
     width: 80,
+    borderRadius: 100
   },
   welcomeText: {
     fontSize: 42,
