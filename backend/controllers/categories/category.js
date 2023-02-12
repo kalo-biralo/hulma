@@ -22,23 +22,42 @@ module.exports.addCategory = async (req, res) => {
 }
 
 module.exports.getCategories = async (req, res) => {
-    try{
-
+    try {
         const categories = await categoryModel.find();
-        const categoriesCount = await categoryModel.find().count();
-
         return res.json({
-            success : true,
-            status : 400,
-            message : "list of all categories",
-            categories,
-            count : categoriesCount
-        })
-
-    }catch(error){
-        return res.send(error.message)
+            success: true,
+            status: 200,
+            message: "list of all categories",
+            data: categories
+        });
+    } catch (error) {
+        return res.json({
+            success: false,
+            status: 400,
+            message: error.message
+        });
     }
-}
+};
+
+
+// module.exports.getCategories = async (req, res) => {
+//     try{
+
+//         const categories = await categoryModel.find();
+//         const categoriesCount = await categoryModel.find().count();
+
+//         return res.json({
+//             success : true,
+//             status : 200,
+//             message : "list of all categories",
+//             categories,
+//             count : categoriesCount
+//         })
+
+//     }catch(error){
+//         return res.send(error.message)
+//     }
+// }
 
 
 module.exports.updateCategory = async (req, res) => {
@@ -95,6 +114,31 @@ module.exports.deleteCategory = async (req, res) => {
     }catch(error){
         return res.send(error.message)
     } 
+}
+
+module.exports.getAllCategory = async (req, res) => {
+    try{
+
+        // Search through title names
+        var {search} = req.query
+        if(!search) search = ""
+
+        const categories = await categoryModel.find();
+
+        return res.json({
+            success : true,
+            status : 200,
+            message : "list of categories",
+            data : categories
+        })
+
+    }catch(error){
+        return res.json({
+            success : false,
+            status : 400,
+            message : error.message
+        })
+    }
 }
 
 // module.exports.getAllProducts = async (req, res) => {

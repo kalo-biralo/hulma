@@ -125,7 +125,7 @@ const DashboardScreen = ({ navigation, route }) => {
               navigation.replace("login");
             }}
           >
-            <Ionicons name="log-out" size={30} color={colors.muted} />
+            <Ionicons name="log-out" size={50} color={colors.muted} />
           </TouchableOpacity>
           <View>
             <Text style={styles.toBarText}>Dashboard</Text>
@@ -133,7 +133,7 @@ const DashboardScreen = ({ navigation, route }) => {
           <TouchableOpacity>
             <Ionicons
               name="person-circle-outline"
-              size={30}
+              size={50}
               color={colors.muted}
             />
           </TouchableOpacity>

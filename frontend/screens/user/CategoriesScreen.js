@@ -27,6 +27,7 @@ const CategoriesScreen = ({ navigation, route }) => {
 
   const [isLoading, setLoading] = useState(true);
   const [products, setProducts] = useState([]);
+  const [category, setCategory] = useState([]);
   const [refeshing, setRefreshing] = useState(false);
   const [label, setLabel] = useState("Loading...");
   const [error, setError] = useState("");
@@ -66,28 +67,30 @@ const CategoriesScreen = ({ navigation, route }) => {
     method: "GET",
     redirect: "follow",
   };
-  const category = [
-    {
-      _id: "62fe244f58f7aa8230817f89",
-      title: "Garments",
-      image: require("../../assets/icons/garments.png"),
-    },
-    {
-      _id: "62fe243858f7aa8230817f86",
-      title: "Electornics",
-      image: require("../../assets/icons/electronics.png"),
-    },
-    {
-      _id: "62fe241958f7aa8230817f83",
-      title: "Cosmentics",
-      image: require("../../assets/icons/cosmetics.png"),
-    },
-    {
-      _id: "62fe246858f7aa8230817f8c",
-      title: "Groceries",
-      image: require("../../assets/icons/grocery.png"),
-    },
-  ];
+  
+  const fetchCategory = () => {
+    var headerOptions = {
+      method: "GET",
+      redirect: "follow",
+    };
+    fetch(`${network.serverip}/categories`, headerOptions)
+      .then((response) => response.json())
+      .then((result) => {
+        if (result.success) {
+          setCategory(result.data);
+          setError("");
+        } else {
+          setError(result.message);
+        }
+      })
+      .catch((error) => {
+        setError(error.message);
+        console.log("error", error);
+      });
+  };
+
+
+ 
   const [selectedTab, setSelectedTab] = useState(category[0]);
 
   //method to fetch the product from server using API call
@@ -143,6 +146,11 @@ const CategoriesScreen = ({ navigation, route }) => {
   useEffect(() => {
     fetchProduct();
   }, []);
+
+  useEffect(() => {
+    fetchCategory();
+  }, []);
+
 
   return (
     <View style={styles.container}>
@@ -203,7 +211,6 @@ const CategoriesScreen = ({ navigation, route }) => {
             />
           )}
         />
-
         {foundItems.filter(
           (product) => product?.category?._id === selectedTab?._id
         ).length === 0 ? (
@@ -252,7 +259,7 @@ const CategoriesScreen = ({ navigation, route }) => {
                 <ProductCard
                   cardSize={"large"}
                   name={product.title}
-                  image={`${network.serverip}/uploads/${product.image}`}
+                  image={`${product.image}`}
                   price={product.price}
                   quantity={product.quantity}
                   onPress={() => handleProductPress(product)}

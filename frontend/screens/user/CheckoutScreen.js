@@ -174,12 +174,12 @@ const CheckoutScreen = ({ navigation, route }) => {
           <View style={styles.list}>
             <Text style={styles.secondaryTextSm}>Email</Text>
             <Text style={styles.secondaryTextSm}>
-              bukhtyar.haider1@gmail.com
+              prashjeevrai@gmail.com
             </Text>
           </View>
           <View style={styles.list}>
             <Text style={styles.secondaryTextSm}>Phone</Text>
-            <Text style={styles.secondaryTextSm}>+92 3410988683</Text>
+            <Text style={styles.secondaryTextSm}>+977 9808117551</Text>
           </View>
         </View>
         <Text style={styles.primaryText}>Address</Text>
@@ -226,7 +226,7 @@ const CheckoutScreen = ({ navigation, route }) => {
             }}
           />
         ) : (
-          <CustomButton text={"Submit Order"} disabled />
+          <CustomButton text={"Submit Order"}/>
         )}
       </View>
       <Modal

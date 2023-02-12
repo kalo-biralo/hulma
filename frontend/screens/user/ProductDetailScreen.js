@@ -222,7 +222,7 @@ const ProductDetailScreen = ({ navigation, route }) => {
       </View>
       <View style={styles.bodyContainer}>
         <View style={styles.productImageContainer}>
-          <Image source={{ uri: productImage }} style={styles.productImage} />
+          <Image source={{ uri: product?.image}} style={styles.productImage} />
         </View>
         <CustomAlert message={error} type={alertType} />
         <View style={styles.productInfoContainer}>

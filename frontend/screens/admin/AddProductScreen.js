@@ -29,6 +29,8 @@ const AddProductScreen = ({ navigation, route }) => {
   const [image, setImage] = useState("");
   const [error, setError] = useState("");
   const [quantity, setQuantity] = useState("");
+  const [quota, setQuota] = useState("");
+  const [quotaFilled, setQuotafilled] = useState("");
   const [description, setDescription] = useState("");
   const [category, setCategory] = useState("");
   const [alertType, setAlertType] = useState("error");
@@ -109,7 +111,7 @@ const AddProductScreen = ({ navigation, route }) => {
     };
 
     fetch(
-      "https://api-easybuy.herokuapp.com/photos/upload",
+      `${network.serverip}/photos/upload`,
       ImageRequestOptions
     )
       .then((response) => response.json())
@@ -127,6 +129,7 @@ const AddProductScreen = ({ navigation, route }) => {
     description: description,
     category: category,
     quantity: quantity,
+    quota: quota
   });
 
   var requestOptions = {
@@ -165,7 +168,10 @@ const AddProductScreen = ({ navigation, route }) => {
       setError("Please enter the product price");
       setIsloading(false);
     } else if (quantity <= 0) {
-      setError("Quantity must be greater then 1");
+      setError("Quantity must be greater than 1");
+      setIsloading(false);
+    } else if (quota <= 0) {
+      setError("Quota must be greater than 1");
       setIsloading(false);
     } else if (image == null) {
       setError("Please upload the product image");
@@ -278,6 +284,13 @@ const AddProductScreen = ({ navigation, route }) => {
             value={description}
             setValue={setDescription}
             placeholder={"Description"}
+            placeholderTextColor={colors.muted}
+            radius={5}
+          />
+          <CustomInput
+            value={quota}
+            setValue={setQuota}
+            placeholder={"Quota"}
             placeholderTextColor={colors.muted}
             radius={5}
           />

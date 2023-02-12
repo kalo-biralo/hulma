@@ -3,9 +3,9 @@ const productModel = require("../../models/product")
 module.exports.addProduct = async (req, res) => {
     try{
 
-        const {title, sku, price, image} = req.body;
+        const {title, sku, price, image, quota, quotaFilled} = req.body;
 
-        if(!title || !sku || !price) return res.send("Fields are empty")
+        if(!title || !sku || !price || !quota) return res.send("Fields are empty")
 
         let product = new productModel(req.body)
         product.save()
@@ -29,7 +29,7 @@ module.exports.getProducts = async (req, res) => {
 
         return res.json({
             success : true,
-            status : 400,
+            status : 200,
             message : "list of all products",
             products,
             count : productsCount
@@ -44,7 +44,7 @@ module.exports.getProducts = async (req, res) => {
 module.exports.updateProduct = async (req, res) => {
     try{
 
-        const {title, sku, price, image} = req.body;
+        const {title, sku, price, image, quota, quotaFilled} = req.body;
         const {id} = req.query;
 
         // check if product exist with the given product id

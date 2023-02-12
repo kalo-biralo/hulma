@@ -8,7 +8,9 @@ const productSchema = mongoose.Schema({
     image : String,
     description : String,
     category : {type:mongoose.Schema.Types.ObjectId, ref:'categories'},
-    quantity : Number
+    quantity : Number,
+    quota: Number,
+    quotaFilled: Number
 
 }, { timestamps : true })
 
