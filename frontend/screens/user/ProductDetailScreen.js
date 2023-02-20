@@ -25,8 +25,9 @@ const ProductDetailScreen = ({ navigation, route }) => {
   const { addCartItem } = bindActionCreators(actionCreaters, dispatch);
 
   //method to add item to cart(redux)
-  const handleAddToCat = (item) => {
+  const handleAddToCart = (item) => {
     addCartItem(item);
+    addQuotaFilled(item._id)
   };
 
   //remove the authUser from async storage and navigate to login
@@ -38,6 +39,7 @@ const ProductDetailScreen = ({ navigation, route }) => {
   const [onWishlist, setOnWishlist] = useState(false);
   const [avaiableQuantity, setAvaiableQuantity] = useState(0);
   const [quantity, setQuantity] = useState(0);
+  const [quotaFilled, setQuotafilled] = useState(0);
   const [productImage, SetProductImage] = useState(" ");
   const [wishlistItems, setWishlistItems] = useState([]);
   const [error, setError] = useState("");
@@ -178,10 +180,37 @@ const ProductDetailScreen = ({ navigation, route }) => {
     }
   };
 
+  const addQuotaFilled = async (itemId) => {
+    try {
+      const response = await fetch(`${network.serverip}/add-product-quotaFilled?id=${product?._id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ itemId })
+      });
+  
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      else {
+      const data = await response.json();
+      console.log('Quota filled updated successfully:', data);
+      setQuotafilled(data.quotaFilled);
+      }
+    } catch (error) {
+      console.error('Error updating quota filled:', error);
+      throw error;
+    }
+  }
+  
+
+
   //set quantity, avaiableQuantity, product image and fetch wishlist on initial render
   useEffect(() => {
-    setQuantity(0);
+    setQuantity(1);
     setAvaiableQuantity(product.quantity);
+    setQuotafilled(product.quotaFilled);
     SetProductImage(`${network.serverip}/uploads/${product?.image}`);
     fetchWishlist();
   }, []);
@@ -230,6 +259,10 @@ const ProductDetailScreen = ({ navigation, route }) => {
             <View style={styles.productNameContaier}>
               <Text style={styles.productNameText}>{product?.title}</Text>
             </View>
+            <View style={styles.productQuotaContainer}>
+                <Text style={styles.q}>Quota filled</Text>
+                <Text> {product?.quotaFilled}/{product?.quota}</Text>
+            </View>
             <View style={styles.infoButtonContainer}>
               <View style={styles.wishlistButtonContainer}>
                 <TouchableOpacity
@@ -251,7 +284,7 @@ const ProductDetailScreen = ({ navigation, route }) => {
               </View>
               <View style={styles.productPriceContainer}>
                 <Text style={styles.secondaryTextSm}>Price:</Text>
-                <Text style={styles.primaryTextSm}>{product?.price}$</Text>
+                <Text style={styles.primaryTextSm}>Rs {product?.price}</Text>
               </View>
             </View>
             <View style={styles.productDescriptionContainer}>
@@ -286,7 +319,7 @@ const ProductDetailScreen = ({ navigation, route }) => {
                 <CustomButton
                   text={"Add to Cart"}
                   onPress={() => {
-                    handleAddToCat(product);
+                    handleAddToCart(product);
                   }}
                 />
               ) : (
@@ -350,6 +383,14 @@ const styles = StyleSheet.create({
     justifyContent: "flex-end",
     alignItems: "center",
     elevation: 25,
+  },
+  productQuotaContainer: {
+    width: "100%",
+    flex: 3,
+    backgroundColor: colors.white,
+    justifyContent: "flex-start",
+    alignItems: "flex-start",
+    paddingLeft: 15,
   },
   productImage: {
     height: 300,
@@ -434,6 +475,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     elevation: 5,
   },
+  q:{paddingLeft:3},
   secondaryTextSm: { fontSize: 15, fontWeight: "bold" },
   primaryTextSm: { color: colors.primary, fontSize: 15, fontWeight: "bold" },
   productDescriptionContainer: {

@@ -131,15 +131,11 @@ const HomeScreen = ({ navigation, route }) => {
 
   return (
     <View style={styles.container}>
-      <StatusBar></StatusBar>
       <View style={styles.topBarContainer}>
-        <TouchableOpacity disabled>
-          <Ionicons name="menu" size={50} color={colors.muted} />
-        </TouchableOpacity>
         <View style={styles.topbarlogoContainer}>
           <Image source={easybuylogo} style={styles.logo} />
-          <Text style={styles.toBarText}>HulMa</Text>
         </View>
+        <Text style={styles.toBarText}>HulMa</Text>
         <TouchableOpacity
           style={styles.cartIconContainer}
           onPress={() => navigation.navigate("cart")}
@@ -196,12 +192,6 @@ const HomeScreen = ({ navigation, route }) => {
               underlineColorAndroid="transparent"
             />
             {/* <CustomInput radius={5} placeholder={"Search...."} /> */}
-          </View>
-          <View style={styles.buttonContainer}>
-            <TouchableOpacity style={styles.scanButton}>
-              <Text style={styles.scanButtonText}>Scan</Text>
-              <Image source={scanIcon} style={{ width: 20, height: 20 }} />
-            </TouchableOpacity>
           </View>
         </View>
         <ScrollView nestedScrollEnabled={true}>
@@ -275,6 +265,8 @@ const HomeScreen = ({ navigation, route }) => {
                       quantity={item.quantity}
                       onPress={() => handleProductPress(item)}
                       onPressSecondary={() => handleAddToCat(item)}
+                      quota = {item.quota}
+                      quotaFilled = {item.quotaFilled}
                     />
                   </View>
                 )}
@@ -305,8 +297,9 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-between",
-    alignItems: "center",
+    alignItems: "flex-end",
     padding: 20,
+    paddingTop: "10%"
   },
   toBarText: {
     fontSize: 15,
@@ -348,10 +341,10 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "space-evenly",
+    justifyContent: "center",
   },
   inputContainer: {
-    width: "70%",
+    width: "90%",
     display: "flex",
     justifyContent: "center",
     alignItems: "center",

@@ -5,7 +5,7 @@ module.exports.addProduct = async (req, res) => {
 
         const {title, sku, price, image, quota, quotaFilled} = req.body;
 
-        if(!title || !sku || !price || !quota) return res.send("Fields are empty")
+        if(!title || !sku || !price || !quota || !quotaFilled) return res.send("Fields are empty")
 
         let product = new productModel(req.body)
         product.save()
@@ -123,3 +123,38 @@ module.exports.getAllProducts = async (req, res) => {
     }
 }
 
+module.exports.addQuotaFillProduct = async (req, res) => {
+    const {id} = req.query
+  try {
+    const product = await productModel.findOne({_id : id})
+    console.log(product);
+    if (!product) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+    product.quotaFilled += 1;
+    await product.save();
+    res.json(product);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Error updating product quotaFilled" });
+  }
+};
+
+module.exports.subQuotaFillProduct = async (req, res) => {
+    const {id} = req.query
+  try {
+    const product = await productModel.findOne({_id : id})
+    console.log(product);
+    if (!product) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+    product.quotaFilled -= 1;
+    await product.save();
+    res.json(product);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Error updating product quotaFilled" });
+  }
+};
+
+  

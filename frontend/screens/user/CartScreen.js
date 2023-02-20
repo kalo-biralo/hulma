@@ -22,6 +22,7 @@ const CartScreen = ({ navigation }) => {
   const cartproduct = useSelector((state) => state.product);
   const [totalPrice, setTotalPrice] = useState(0);
   const [refresh, setRefresh] = useState(false);
+  const [quotaFilled, setQuotafilled] = useState(0);
   const dispatch = useDispatch();
 
   const { removeCartItem, increaseCartItemQuantity, decreaseCartItemQuantity } =
@@ -37,6 +38,7 @@ const CartScreen = ({ navigation }) => {
     if (avaiableQuantity > quantity) {
       increaseCartItemQuantity({ id: id, type: "increase" });
       setRefresh(!refresh);
+      addQuotaFilled(id);
     }
   };
 
@@ -44,6 +46,7 @@ const CartScreen = ({ navigation }) => {
   const decreaseQuantity = (id, quantity) => {
     if (quantity > 1) {
       decreaseCartItemQuantity({ id: id, type: "decrease" });
+      subQuotaFilled(id);
       setRefresh(!refresh);
     }
   };
@@ -56,6 +59,58 @@ const CartScreen = ({ navigation }) => {
       }, 0)
     );
   }, [cartproduct, refresh]);
+
+  const addQuotaFilled = async (itemId) => {
+    try {
+      const response = await fetch(`${network.serverip}/add-product-quotaFilled?id=${itemId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ itemId })
+      });
+  
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      else {
+      const data = await response.json();
+      console.log('Quota filled updated successfully:', data);
+      setQuotafilled(data.quotaFilled);
+      }
+    } catch (error) {
+      console.error('Error updating quota filled:', error);
+      throw error;
+    }
+  }
+
+  const subQuotaFilled = async (itemId) => {
+    try {
+      const response = await fetch(`${network.serverip}/sub-product-quotaFilled?id=${itemId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ itemId })
+      });
+  
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      else {
+      const data = await response.json();
+      console.log('Quota filled updated successfully:', data);
+      setQuotafilled(data.quotaFilled);
+      }
+    } catch (error) {
+      console.error('Error updating quota filled:', error);
+      throw error;
+    }
+  }
+
+  useEffect(() => {
+    setQuotafilled(null);
+  }, []);
 
   return (
     <View style={styles.container}>
@@ -131,7 +186,7 @@ const CartScreen = ({ navigation }) => {
           </View>
           <View>
             <Text style={styles.cartBottomPrimaryText}>Total</Text>
-            <Text style={styles.cartBottomSecondaryText}>{totalPrice}$</Text>
+            <Text style={styles.cartBottomSecondaryText}>Rs {totalPrice}</Text>
           </View>
         </View>
         <View style={styles.cartBottomRightContainer}>

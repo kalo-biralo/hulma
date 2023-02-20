@@ -72,8 +72,8 @@ const AddProductScreen = ({ navigation, route }) => {
       .then((response) => response.json())
       .then((result) => {
         if (result.success) {
-          setCategories(result.categories);
-          result.categories.forEach((cat) => {
+          setCategories(result.data);
+          result.data.forEach((cat) => {
             let obj = {
               label: cat.title,
               value: cat._id,
@@ -129,7 +129,8 @@ const AddProductScreen = ({ navigation, route }) => {
     description: description,
     category: category,
     quantity: quantity,
-    quota: quota
+    quota: quota,
+    quotaFilled: quotaFilled
   });
 
   var requestOptions = {
@@ -173,6 +174,9 @@ const AddProductScreen = ({ navigation, route }) => {
     } else if (quota <= 0) {
       setError("Quota must be greater than 1");
       setIsloading(false);
+    } else if (quotaFilled == null) {
+        setError("QuotaFilled is empty");
+        setIsloading(false);
     } else if (image == null) {
       setError("Please upload the product image");
       setIsloading(false);
@@ -203,6 +207,8 @@ const AddProductScreen = ({ navigation, route }) => {
     console.log(categories);
   }, []);
 
+
+  
   return (
     <KeyboardAvoidingView style={styles.container}>
       <StatusBar></StatusBar>
@@ -291,6 +297,13 @@ const AddProductScreen = ({ navigation, route }) => {
             value={quota}
             setValue={setQuota}
             placeholder={"Quota"}
+            placeholderTextColor={colors.muted}
+            radius={5}
+          />
+          <CustomInput
+            value={quotaFilled}
+            setValue={setQuotafilled}
+            placeholder={"Quota Filled"}
             placeholderTextColor={colors.muted}
             radius={5}
           />

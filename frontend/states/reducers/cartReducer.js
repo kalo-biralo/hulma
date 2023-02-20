@@ -30,6 +30,8 @@ const reducer = (state = [], action) => {
             title: action.payload.title,
             updatedAt: action.payload.updatedAt,
             avaiableQuantity: action.payload.quantity,
+            quotaFilled: action.payload.quotaFilled,
+            quota: action.payload.quota,
             quantity: 1,
           },
         ];
@@ -60,7 +62,7 @@ const reducer = (state = [], action) => {
         state.splice(0, state.length);
         return state;
       }
-
+      
     default:
       return state;
   }

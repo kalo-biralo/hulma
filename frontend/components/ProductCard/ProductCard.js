@@ -7,6 +7,8 @@ const ProductCard = ({
   name,
   price,
   image,
+  quota,
+  quotaFilled,
   quantity,
   onPress,
   onPressSecondary,
@@ -26,6 +28,7 @@ const ProductCard = ({
             0,
             10
           )}..`}</Text>
+          <Text>{quotaFilled}/{quota}</Text>
           <Text style={styles.primaryTextSm}>Rs {price}</Text>
         </View>
         <View>
@@ -38,7 +41,7 @@ const ProductCard = ({
             </TouchableOpacity>
           ) : (
             <TouchableOpacity style={styles.iconContainerDisable} disabled>
-              <Ionicons name="cart" size={20} color="white" />
+              <Ionicons name="cart" size={20} color="white" /><Text>SOLDOUT</Text>
             </TouchableOpacity>
           )}
         </View>

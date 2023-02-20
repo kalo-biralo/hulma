@@ -264,6 +264,8 @@ const CategoriesScreen = ({ navigation, route }) => {
                   quantity={product.quantity}
                   onPress={() => handleProductPress(product)}
                   onPressSecondary={() => handleAddToCat(product)}
+                  quota = {product.quota}
+                  quotaFilled = {product.quotaFilled}
                 />
                 <View style={styles.emptyView}></View>
               </View>

@@ -1,3 +1,5 @@
+import { network } from '../../constants';
+import axios from 'axios';
 import * as actions from "../actionTypes/actionTypes";
 
 export const addCartItem = (product) => {
@@ -29,3 +31,8 @@ export const emptyCart = (type) => {
     dispatch({ type: actions.EMPTY_CART, payload: type });
   };
 };
+
+
+
+
+
