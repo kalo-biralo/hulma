@@ -2,6 +2,9 @@ import { StyleSheet, Text, TouchableOpacity, View, Image } from "react-native";
 import React from "react";
 import { colors, network } from "../../constants";
 import { Ionicons } from "@expo/vector-icons";
+import  { useState, useEffect } from "react";
+
+
 
 const ProductCard = ({
   name,
@@ -14,6 +17,30 @@ const ProductCard = ({
   onPressSecondary,
   cardSize,
 }) => {
+  const [quotaFilleds, setQuotafilleds] = useState(0);
+  const fetchQuotaFilled = async (itemId) => {
+    try {
+      const response = await fetch(`${network.serverip}/product-quotaFilled?id=${product?._id}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+  
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      } else {
+        const data = await response.json();
+        console.log('Quota fetched successfully:', data);
+        setQuotafilleds(data.quotaFilled); // update state with the quotaFilled value
+      }
+    } catch (error) {
+      console.error('Error fetching quota filled:', error);
+      throw error;
+    }
+  }
+
+  useEffect(() => {fetchQuotaFilled();}, [quotaFilleds]);
   return (
     <TouchableOpacity
       style={[styles.container, { width: cardSize === "large" ? "100%" : 150 }]}

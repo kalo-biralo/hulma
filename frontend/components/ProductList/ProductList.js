@@ -9,6 +9,8 @@ const ProductList = ({
   title,
   image,
   qantity,
+  quota,
+  quotaFilled,
   onPressView,
   onPressEdit,
   onPressDelete,
@@ -34,7 +36,8 @@ const ProductList = ({
             <Text>{price}</Text>
           </View>
           <View style={styles.productInfoItem}>
-            <Text style={styles.productInfoItemText}>SKU: </Text>
+            <Text style={styles.productInfoItemText}>quotaFilled: </Text>
+            <Text>{quotaFilled}/{quota}</Text>
             <Text>{qantity <= 0 ? "Out of Stock" : qantity}</Text>
           </View>
         </View>

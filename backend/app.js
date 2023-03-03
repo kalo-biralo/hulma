@@ -32,7 +32,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage })
 
 const { register, login, updateUser, deleteUser, userById, resetPassword } = require("./controllers/auth/auth");
-const { addProduct, updateProduct, deleteProduct, getAllProducts, addQuotaFillProduct, subQuotaFillProduct } = require("./controllers/products/products")
+const { addProduct, updateProduct, deleteProduct, getAllProducts, addQuotaFillProduct, subQuotaFillProduct, quotaFillProduct } = require("./controllers/products/products")
 const { checkout, addToCart, cart, removeFromCart } = require("./controllers/user/cart")
 const { isAdmin, checkAuth } = require("./controllers/middlewares/auth");
 const { dashboardData, getAllUsers } = require('./controllers/admin/dashboard');
@@ -67,6 +67,7 @@ app.post("/update-product", [isAdmin], updateProduct)
 app.get("/delete-product", [isAdmin], deleteProduct)
 app.put("/add-product-quotaFilled", addQuotaFillProduct)
 app.put("/sub-product-quotaFilled", subQuotaFillProduct)
+app.get("/product-quotaFilled", quotaFillProduct)
 
 
 // CATEGORIES

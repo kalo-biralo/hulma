@@ -192,11 +192,12 @@ const ViewProductScreen = ({ navigation, route }) => {
             return (
               <ProductList
                 key={index}
-                image={`${network.serverip}/uploads/${product?.image}`}
+                image={product?.image}
                 title={product?.title}
                 category={product?.category?.title}
                 price={product?.price}
-                qantity={product?.sku}
+                quota={product?.quota}
+                quotaFilled={product?.quotaFilled}
                 onPressView={() => {
                   console.log("view is working " + product._id);
                 }}

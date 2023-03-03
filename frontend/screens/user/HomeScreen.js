@@ -231,7 +231,7 @@ const HomeScreen = ({ navigation, route }) => {
             <View style={styles.emptyView}></View>
           </View>
           <View style={styles.primaryTextContainer}>
-            <Text style={styles.primaryText}>New Arrivals</Text>
+            <Text style={styles.primaryText}>Approaching Deadlines</Text>
           </View>
           {products.length === 0 ? (
             <View style={styles.productCardContainerEmpty}>

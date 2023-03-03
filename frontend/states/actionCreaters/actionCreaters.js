@@ -1,5 +1,3 @@
-import { network } from '../../constants';
-import axios from 'axios';
 import * as actions from "../actionTypes/actionTypes";
 
 export const addCartItem = (product) => {
@@ -25,6 +23,7 @@ export const decreaseCartItemQuantity = (id) => {
     dispatch({ type: actions.DECREASE_CART_ITEM_QUANTITY, payload: id });
   };
 };
+
 
 export const emptyCart = (type) => {
   return (dispatch) => {

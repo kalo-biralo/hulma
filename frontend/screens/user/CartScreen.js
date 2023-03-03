@@ -18,14 +18,15 @@ import { useSelector, useDispatch } from "react-redux";
 import * as actionCreaters from "../../states/actionCreaters/actionCreaters";
 import { bindActionCreators } from "redux";
 
-const CartScreen = ({ navigation }) => {
+const CartScreen = ({ navigation}) => {
   const cartproduct = useSelector((state) => state.product);
   const [totalPrice, setTotalPrice] = useState(0);
   const [refresh, setRefresh] = useState(false);
   const [quotaFilled, setQuotafilled] = useState(0);
+  const [quota, setQuota] = useState(0);
   const dispatch = useDispatch();
 
-  const { removeCartItem, increaseCartItemQuantity, decreaseCartItemQuantity } =
+  const { removeCartItem, increaseCartItemQuantity, decreaseCartItemQuantity, increaseItemQuotaFilled } =
     bindActionCreators(actionCreaters, dispatch);
 
   //method to remove the item from (cart) redux
@@ -59,6 +60,7 @@ const CartScreen = ({ navigation }) => {
       }, 0)
     );
   }, [cartproduct, refresh]);
+
 
   const addQuotaFilled = async (itemId) => {
     try {
@@ -107,10 +109,56 @@ const CartScreen = ({ navigation }) => {
       throw error;
     }
   }
+  const fetchQuotaFilled = async (itemId) => {
+    try {
+      const response = await fetch(`${network.serverip}/product-quotaFilled?id=63e47bad28835a365d53436c`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+  
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      } else {
+        const data = await response.json();
+        console.log('Quota fetched successfully:', data);
+        setQuotafilled(data.quotaFilled); // update state with the quotaFilled value
+      }
+    } catch (error) {
+      console.error('Error fetching quota filled:', error);
+      throw error;
+    }
+  }
+
+  const fetchQuota = async (itemId) => {
+    try {
+      const response = await fetch(`${network.serverip}/product-quotaFilled?id=63e47bad28835a365d53436c`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+  
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      } else {
+        const data = await response.json();
+        console.log('Quota fetched successfully:', data);
+        setQuota(data.quota); 
+      }
+    } catch (error) {
+      console.error('Error fetching quota filled:', error);
+      throw error;
+    }
+  }
 
   useEffect(() => {
     setQuotafilled(null);
   }, []);
+  
+  useEffect(() => {fetchQuotaFilled();}, []);
+  useEffect(() => {fetchQuota();}, []);
 
   return (
     <View style={styles.container}>
@@ -153,7 +201,7 @@ const CartScreen = ({ navigation }) => {
             <CartProductList
               key={index}
               index={index}
-              image={`${network.serverip}/uploads/${item.image}`}
+              image={`${item.image}`}
               title={item.title}
               price={item.price}
               quantity={item.quantity}
@@ -194,6 +242,7 @@ const CartScreen = ({ navigation }) => {
             <CustomButton
               text={"Checkout"}
               onPress={() => navigation.navigate("checkout")}
+              disabled={quotaFilled<quota}
             />
           ) : (
             <CustomButton

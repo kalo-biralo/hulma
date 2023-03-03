@@ -22,12 +22,12 @@ const ProductDetailScreen = ({ navigation, route }) => {
   const cartproduct = useSelector((state) => state.product);
   const dispatch = useDispatch();
 
-  const { addCartItem } = bindActionCreators(actionCreaters, dispatch);
+  const { addCartItem, increaseItemQuotaFilled } = bindActionCreators(actionCreaters, dispatch);
 
   //method to add item to cart(redux)
   const handleAddToCart = (item) => {
     addCartItem(item);
-    addQuotaFilled(item._id)
+    addQuotaFilled(item._id);
   };
 
   //remove the authUser from async storage and navigate to login
@@ -203,6 +203,28 @@ const ProductDetailScreen = ({ navigation, route }) => {
       throw error;
     }
   }
+
+  const fetchQuotaFilled = async (itemId) => {
+    try {
+      const response = await fetch(`${network.serverip}/product-quotaFilled?id=${product?._id}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+  
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      } else {
+        const data = await response.json();
+        console.log('Quota fetched successfully:', data);
+        setQuotafilled(data.quotaFilled); // update state with the quotaFilled value
+      }
+    } catch (error) {
+      console.error('Error fetching quota filled:', error);
+      throw error;
+    }
+  }
   
 
 
@@ -215,8 +237,12 @@ const ProductDetailScreen = ({ navigation, route }) => {
     fetchWishlist();
   }, []);
 
+
+
   //render whenever the value of wishlistItems change
   useEffect(() => {}, [wishlistItems]);
+  useEffect(() => {fetchQuotaFilled();}, [quotaFilled]);
+
 
   return (
     <View style={styles.container}>
@@ -229,7 +255,7 @@ const ProductDetailScreen = ({ navigation, route }) => {
         >
           <Ionicons
             name="arrow-back-circle-outline"
-            size={30}
+            size={40}
             color={colors.muted}
           />
         </TouchableOpacity>
@@ -237,6 +263,7 @@ const ProductDetailScreen = ({ navigation, route }) => {
         <View></View>
         <TouchableOpacity
           style={styles.cartIconContainer}
+          size={65}
           onPress={() => navigation.navigate("cart")}
         >
           {cartproduct.length > 0 ? (
@@ -261,7 +288,8 @@ const ProductDetailScreen = ({ navigation, route }) => {
             </View>
             <View style={styles.productQuotaContainer}>
                 <Text style={styles.q}>Quota filled</Text>
-                <Text> {product?.quotaFilled}/{product?.quota}</Text>
+                <Text> {quotaFilled}/{product?.quota}</Text>
+                <Text>Deadline:<Text style={{ color: 'red' }}> {product && new Date(product.deadLine).toLocaleDateString()}</Text></Text>
             </View>
             <View style={styles.infoButtonContainer}>
               <View style={styles.wishlistButtonContainer}>

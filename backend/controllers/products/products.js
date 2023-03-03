@@ -157,4 +157,18 @@ module.exports.subQuotaFillProduct = async (req, res) => {
   }
 };
 
+module.exports.quotaFillProduct = async (req, res) => {
+    const {id} = req.query
+  try {
+    const product = await productModel.findOne({_id : id})
+    console.log(product);
+    if (!product) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+    res.json(product);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Error updating product quotaFilled" });
+  }
+};
   

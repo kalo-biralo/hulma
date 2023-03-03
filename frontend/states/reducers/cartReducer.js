@@ -62,7 +62,7 @@ const reducer = (state = [], action) => {
         state.splice(0, state.length);
         return state;
       }
-      
+ 
     default:
       return state;
   }

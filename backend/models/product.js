@@ -10,7 +10,8 @@ const productSchema = mongoose.Schema({
     category : {type:mongoose.Schema.Types.ObjectId, ref:'categories'},
     quantity : Number,
     quota: Number,
-    quotaFilled: Number
+    quotaFilled: Number,
+    deadLine: Date
 
 }, { timestamps : true })
 

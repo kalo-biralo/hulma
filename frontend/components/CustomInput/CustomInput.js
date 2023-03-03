@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
     width: "100%",
     padding: 5,
-    backgroundColor: colors.white,
+    backgroundColor: colors.primary_shadow,
     elevation: 5,
     paddingHorizontal: 20,
   },

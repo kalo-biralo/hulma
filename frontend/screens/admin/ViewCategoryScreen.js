@@ -119,8 +119,8 @@ const ViewCategoryScreen = ({ navigation, route }) => {
       .then((response) => response.json())
       .then((result) => {
         if (result.success) {
-          setCategories(result.categories);
-          setFoundItems(result.categories);
+          setCategories(result.data);
+          setFoundItems(result.data);
           setError("");
         } else {
           setError(result.message);
@@ -156,7 +156,6 @@ const ViewCategoryScreen = ({ navigation, route }) => {
   useEffect(() => {
     fetchCategories();
   }, []);
-
   return (
     <View style={styles.container}>
       <ProgressDialog visible={isloading} label={label} />

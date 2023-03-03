@@ -6,7 +6,9 @@ import {
   Text,
   ScrollView,
   Modal,
+  Input
 } from "react-native";
+import { RadioButton } from 'react-native-paper';
 import { Ionicons } from "@expo/vector-icons";
 import React, { useState, useEffect } from "react";
 import BasicProductList from "../../components/BasicProductList/BasicProductList";
@@ -26,13 +28,16 @@ const CheckoutScreen = ({ navigation, route }) => {
   const dispatch = useDispatch();
   const { emptyCart } = bindActionCreators(actionCreaters, dispatch);
 
-  const [deliveryCost, setDeliveryCost] = useState(0);
+  const [deliveryCost, setDeliveryCost] = useState(100);
   const [totalCost, setTotalCost] = useState(0);
   const [address, setAddress] = useState("");
   const [country, setCountry] = useState("");
   const [city, setCity] = useState("");
   const [streetAddress, setStreetAddress] = useState("");
   const [zipcode, setZipcode] = useState("");
+  const [paymentMethod, setPaymentMethod] = useState('Cash On Delivery');
+  const paymentMethods = ['Cash On Delivery', 'Online Payment'];
+
 
   //method to remove the authUser from aysnc storage and navigate to login
   const logout = async () => {
@@ -160,7 +165,7 @@ const CheckoutScreen = ({ navigation, route }) => {
           </View>
           <View style={styles.list}>
             <Text>Delivery</Text>
-            <Text>Rs 100</Text>
+            <Text>Rs {deliveryCost}</Text>
           </View>
           <View style={styles.list}>
             <Text style={styles.primaryTextSm}>Total</Text>
@@ -173,14 +178,20 @@ const CheckoutScreen = ({ navigation, route }) => {
         <View style={styles.listContainer}>
           <View style={styles.list}>
             <Text style={styles.secondaryTextSm}>Email</Text>
-            <Text style={styles.secondaryTextSm}>
-              prashjeevrai@gmail.com
-            </Text>
           </View>
+          <CustomInput
+            placeholder={"Email"}
+            placeholderTextColor={colors.muted}
+            radius={5}
+          />
           <View style={styles.list}>
             <Text style={styles.secondaryTextSm}>Phone</Text>
-            <Text style={styles.secondaryTextSm}>+977 9808117551</Text>
           </View>
+          <CustomInput
+            placeholder={"Number"}
+            placeholderTextColor={colors.muted}
+            radius={5}
+          />
         </View>
         <Text style={styles.primaryText}>Address</Text>
         <View style={styles.listContainer}>
@@ -208,11 +219,22 @@ const CheckoutScreen = ({ navigation, route }) => {
         </View>
         <Text style={styles.primaryText}>Payment</Text>
         <View style={styles.listContainer}>
-          <View style={styles.list}>
-            <Text style={styles.secondaryTextSm}>Method</Text>
-            <Text style={styles.primaryTextSm}>Cash On Delivery</Text>
-          </View>
-        </View>
+  <View style={styles.list}>
+    <Text style={styles.secondaryTextSm}>Method</Text>
+    {paymentMethods.map((method) => (
+      <View key={method} style={styles.radioButtonContainer}>
+        <RadioButton
+          value={method}
+          status={paymentMethod === method ? 'checked' : 'unchecked'}
+          onPress={() => setPaymentMethod(method)}
+          color={'#000'} // set the color of the radio button here
+        />
+        <Text>{method}</Text>
+      </View>
+    ))}
+  </View>
+</View>
+
 
         <View style={styles.emptyView}></View>
       </ScrollView>
