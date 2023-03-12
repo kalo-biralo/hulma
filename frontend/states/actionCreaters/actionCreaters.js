@@ -1,8 +1,8 @@
 import * as actions from "../actionTypes/actionTypes";
 
-export const addCartItem = (product) => {
+export const addCartItem = (product, quan) => {
   return (dispatch) => {
-    dispatch({ type: actions.CART_ADD, payload: product });
+    dispatch({ type: actions.CART_ADD, payload: product, quan });
   };
 };
 

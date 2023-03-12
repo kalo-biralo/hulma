@@ -220,7 +220,7 @@ const HomeScreen = ({ navigation, route }) => {
                   <CustomIconButton
                     key={index}
                     text={item.title}
-                    image={item.image}
+                    image={`${item.image}`}
                     onPress={() =>
                       navigation.jumpTo("categories", { categoryID: item })
                     }
